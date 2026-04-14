@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Skills Tracker | Counseling Session Tool</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none; /* slightly better for rapid tapping, but text can still be selected in summary */
+    }
+
+    body {
+      background: #f0f2f1;
+      font-family: system-ui, 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+      padding: 1.5rem 1.2rem 3rem;
+      color: #1a2e2b;
+    }
+
+    /* main layout: two columns on desktop, one on mobile */
+    .tracker-grid {
+      max-width: 1600px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    /* SKILLS PANEL (left / main) */
+    .skills-panel {
+      flex: 2.5;
+      min-width: 280px;
+    }
+
+    /* stopwatch + summary panel */
+    .tools-panel {
+      flex: 1.2;
+      min-width: 260px;
+    }
+
+    /* header */
+    .top-header {
+      margin-bottom: 1.8rem;
+      text-align: center;
+    }
+    .top-header h1 {
+      font-size: 1.9rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, #1c4e4b, #2f6b62);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      letter-spacing: -0.3px;
+    }
+    .top-header p {
+      color: #4c6a66;
+      font-size: 0.9rem;
+      margin-top: 0.3rem;
+    }
+
+    /* skill card container (grid) */
+    .skill-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 0.9rem;
+      margin-top: 0.5rem;
+    }
+
+    .skill-item {
+      background: white;
+      border-radius: 1.2rem;
+      padding: 0.8rem 0.7rem 0.7rem 1rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.05);
+      border: 1px solid #dfe6e3;
+      transition: all 0.1s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .skill-item:hover {
+      border-color: #bdd0ca;
+      background: #fefefc;
+    }
+    .skill-name {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #1c4e4b;
+      letter-spacing: -0.2px;
+      background: #eef3f0;
+      padding: 0.2rem 0.6rem;
+      border-radius: 40px;
+      display: inline-block;
+    }
+    .tally-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #f9fbf9;
+      padding: 0.2rem 0.2rem 0.2rem 0.5rem;
+      border-radius: 60px;
+    }
+    .tally-count {
+      font-weight: 700;
+      font-size: 1.2rem;
+      min-width: 2rem;
+      text-align: center;
+      color: #145c56;
+      background: white;
+      padding: 0 0.2rem;
+    }
+    button.tally-btn {
+      background: #e9f0ed;
+      border: none;
+      font-size: 1.2rem;
+      font-weight: bold;
+      width: 32px;
+      height: 32px;
+      border-radius: 40px;
+      cursor: pointer;
+      color: #2c6e68;
+      transition: 0.08s linear;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+    }
+    button.tally-btn:active {
+      background: #cbdcd6;
+      transform: scale(0.94);
+    }
+    .reset-skill {
+      background: none;
+      border: none;
+      font-size: 0.7rem;
+      color: #a5bbb4;
+      cursor: pointer;
+      width: 24px;
+      height: 24px;
+      border-radius: 30px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .reset-skill:hover {
+      background: #f0e9e2;
+      color: #bf6f4a;
+    }
+
+    /* stopwatch card */
+    .card {
+      background: white;
+      border-radius: 1.8rem;
+      padding: 1.3rem 1.2rem;
+      margin-bottom: 1.8rem;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e2eae6;
+    }
+    .stopwatch-time {
+      font-size: 2.8rem;
+      font-weight: 700;
+      font-family: monospace;
+      letter-spacing: 2px;
+      background: #1f3d3a;
+      color: #f2f9f0;
+      text-align: center;
+      padding: 0.5rem;
+      border-radius: 2rem;
+      margin-bottom: 1rem;
+    }
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      justify-content: center;
+      margin: 1rem 0 0.6rem;
+    }
+    button.action {
+      background: #ecf3f0;
+      border: none;
+      padding: 0.5rem 1.2rem;
+      border-radius: 3rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: 0.1s;
+      color: #2a5f59;
+      font-family: inherit;
+    }
+    button.action-primary {
+      background: #2f6b62;
+      color: white;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    button.action-primary:active {
+      background: #1e4e48;
+    }
+    button.action-danger {
+      background: #fff0ea;
+      color: #c26e4a;
+    }
+    button.summary-btn {
+      background: #dce8e4;
+      width: 100%;
+      margin-top: 0.4rem;
+      font-weight: 700;
+    }
+
+    /* summary modal overlay (lightbox) */
+    .summary-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(30, 40, 38, 0.8);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      visibility: hidden;
+      opacity: 0;
+      transition: 0.2s ease;
+    }
+    .summary-overlay.active {
+      visibility: visible;
+      opacity: 1;
+    }
+    .summary-card {
+      background: #fffdf9;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      border-radius: 2rem;
+      padding: 1.5rem 1.8rem;
+      box-shadow: 0 25px 40px rgba(0, 0, 0, 0.25);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      border: 1px solid #cddad4;
+    }
+    .summary-card h3 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #1c4e4b;
+      border-left: 5px solid #c26e4a;
+      padding-left: 1rem;
+    }
+    .summary-content {
+      overflow-y: auto;
+      background: #f6faf8;
+      padding: 1rem;
+      border-radius: 1.2rem;
+      font-size: 0.9rem;
+      font-family: monospace;
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 50vh;
+      line-height: 1.5;
+    }
+    .summary-actions {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .summary-actions button {
+      padding: 0.5rem 1.2rem;
+      border-radius: 3rem;
+      border: none;
+      font-weight: 500;
+      cursor: pointer;
+      background: #e5edea;
+    }
+    .btn-copy {
+      background: #2f6b62;
+      color: white;
+    }
+    .btn-print {
+      background: #f0e5da;
+    }
+    .close-summary {
+      background: #e2cfc0;
+    }
+    hr {
+      margin: 0.3rem 0;
+      border-color: #e0e9e5;
+    }
+    .reset-all-skills {
+      margin-top: 0.5rem;
+      text-align: right;
+    }
+    .small-note {
+      font-size: 0.7rem;
+      color: #8aa69f;
+      text-align: center;
+      margin-top: 1rem;
+    }
+    @media (max-width: 720px) {
+      .skill-cards {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      }
+      .stopwatch-time {
+        font-size: 2rem;
+      }
+      body {
+        padding: 1rem;
+      }
+    }
+    footer {
+      text-align: center;
+      font-size: 0.7rem;
+      margin-top: 2rem;
+      color: #92aba4;
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-header">
+  <h1>📋 Helping Skills Tracker</h1>
+  <p>AARON RESLINK, LMHC-D</p>
+<p> Webpage design developed using Deepseek AI, content written by humans </p>
+</div>
+
+<div class="tracker-grid">
+  <!-- SKILLS SECTION: all skills listed previously -->
+  <div class="skills-panel">
+    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.8rem;">
+      <h3 style="font-weight: 500; color:#2c5e58;">🔘 Session skill tallies</h3>
+      <button id="globalResetSkills" class="action" style="background:#f2eae3; padding:0.3rem 1rem;">⟳ Reset all counts</button>
+    </div>
+    <div class="skill-cards" id="skillsContainer"></div>
+    <div class="small-note">
+      <i class="note-icon">⚡</i> Tap + to count each use | reset individual with <span style="background:#eef; padding:0 6px; border-radius:12px;">↺</span>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL: stopwatch + summary -->
+  <div class="tools-panel">
+    <div class="card">
+      <div style="font-weight: 600; margin-bottom: 0.5rem;">⏱️ Session Timer</div>
+      <div class="stopwatch-time" id="timerDisplay">00:00:00</div>
+      <div class="btn-group">
+        <button id="startBtn" class="action action-primary">▶ Start</button>
+        <button id="stopBtn" class="action">⏸ Stop</button>
+        <button id="resetTimerBtn" class="action action-danger">⟲ Reset</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="font-weight: 600; margin-bottom: 0.8rem;">📄 Session Summary</div>
+      <button id="getSummaryBtn" class="action summary-btn" style="background:#e0d9cf;">📋 Get Summary & Report</button>
+      <p style="font-size: 0.7rem; margin-top: 0.8rem; color:#7c978f;">Summary includes all skill tallies + total session time. You can copy or print.</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  🧰 transtheoretical helping skills tracker · based on exploratory, insight & directive framework
+</footer>
+
+<!-- SUMMARY MODAL (lightbox) -->
+<div id="summaryModal" class="summary-overlay">
+  <div class="summary-card">
+    <h3>📋 Session Summary Report</h3>
+    <div class="summary-content" id="summaryTextBlock">
+      <!-- dynamic summary will appear here -->
+    </div>
+    <div class="summary-actions">
+      <button id="copySummaryBtn" class="btn-copy">📎 Copy text</button>
+      <button id="printSummaryBtn" class="btn-print">🖨️ Print</button>
+      <button id="closeSummaryBtn" class="close-summary">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // --------------------------------------------------------------
+  // 1. DEFINE THE FULL LIST OF SKILLS (based on your original prompt)
+  // --------------------------------------------------------------
+  const SKILLS_LIST = [
+    "Nonverbals", "Door opener & Probe", "Open questions", "Closed questions",
+    "Paraphrase", "Emotion Reflection", "Meaning Reflection", "Silence",
+    "Confrontation", "Interpretation", "Self-Disclosure", "Immediacy",
+    "Challenge", "Psychoeducation", "Goal Setting", 
+    "Orienting to therapy", "Facilitating environment"
+  ];
+  // note: "Open & Closed questions" split into two for tally clarity, but you can tally individually.
+  // Combined original spirit, but it's more granular: open questions and closed questions separate.
+  // also we include both as two items for complete tracking. consistent with your list.
+  // (All original skills appear: Nonverbals, Door opener & Probe, Open & Closed, Paraphrase, Emotion, Meaning, Silence, Confrontation, Interpretation, Self-Disclosure, Immediacy, Challenge, Psychoeducation, Goal Setting, Orienting, Facilitating.)
+  // We also keep "Closed questions" and "Open questions" as two separate tally-able skills to match classic tracking.
+
+  // state: object mapping skill name -> count
+  let skillCounts = {};
+  
+  // initialize counts to zero
+  function initCounts() {
+    SKILLS_LIST.forEach(skill => {
+      skillCounts[skill] = 0;
+    });
+  }
+  initCounts();
+
+  // DOM elements
+  const skillsContainer = document.getElementById("skillsContainer");
+  const globalResetBtn = document.getElementById("globalResetSkills");
+  const getSummaryBtn = document.getElementById("getSummaryBtn");
+  const summaryModal = document.getElementById("summaryModal");
+  const summaryTextBlock = document.getElementById("summaryTextBlock");
+  const copyBtn = document.getElementById("copySummaryBtn");
+  const printBtn = document.getElementById("printSummaryBtn");
+  const closeSummaryBtn = document.getElementById("closeSummaryBtn");
+
+  // ----- stopwatch logic -----
+  let timerInterval = null;
+  let elapsedSeconds = 0;      // total seconds
+  let isRunning = false;
+  const timerDisplay = document.getElementById("timerDisplay");
+  const startBtn = document.getElementById("startBtn");
+  const stopBtn = document.getElementById("stopBtn");
+  const resetTimerBtn = document.getElementById("resetTimerBtn");
+
+  function formatTime(sec) {
+    const hours = Math.floor(sec / 3600);
+    const minutes = Math.floor((sec % 3600) / 60);
+    const seconds = sec % 60;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  }
+
+  function updateTimerDisplay() {
+    timerDisplay.innerText = formatTime(elapsedSeconds);
+  }
+
+  function startTimer() {
+    if (isRunning) return;
+    isRunning = true;
+    timerInterval = setInterval(() => {
+      if (isRunning) {
+        elapsedSeconds++;
+        updateTimerDisplay();
+      }
+    }, 1000);
+  }
+
+  function stopTimer() {
+    if (timerInterval) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+    isRunning = false;
+  }
+
+  function resetTimer() {
+    stopTimer();
+    elapsedSeconds = 0;
+    updateTimerDisplay();
+  }
+
+  startBtn.addEventListener("click", startTimer);
+  stopBtn.addEventListener("click", stopTimer);
+  resetTimerBtn.addEventListener("click", resetTimer);
+
+  // ----- RENDER SKILLS WITH TALLY UI -----
+  function renderSkills() {
+    skillsContainer.innerHTML = "";
+    for (let skill of SKILLS_LIST) {
+      const count = skillCounts[skill];
+      const skillDiv = document.createElement("div");
+      skillDiv.className = "skill-item";
+      
+      const nameSpan = document.createElement("span");
+      nameSpan.className = "skill-name";
+      nameSpan.innerText = skill;
+      
+      const controlsDiv = document.createElement("div");
+      controlsDiv.className = "tally-controls";
+      
+      const decrementBtn = document.createElement("button");
+      decrementBtn.innerText = "−";
+      decrementBtn.className = "tally-btn";
+      decrementBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (skillCounts[skill] > 0) {
+          skillCounts[skill]--;
+          renderSkills();  // re-render to update counts
+        }
+      });
+      
+      const countSpan = document.createElement("span");
+      countSpan.className = "tally-count";
+      countSpan.innerText = count;
+      
+      const incrementBtn = document.createElement("button");
+      incrementBtn.innerText = "+";
+      incrementBtn.className = "tally-btn";
+      incrementBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        skillCounts[skill]++;
+        renderSkills();
+      });
+      
+      const resetSingle = document.createElement("button");
+      resetSingle.innerHTML = "↺";
+      resetSingle.className = "reset-skill";
+      resetSingle.title = "reset this skill to 0";
+      resetSingle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        skillCounts[skill] = 0;
+        renderSkills();
+      });
+      
+      controlsDiv.appendChild(decrementBtn);
+      controlsDiv.appendChild(countSpan);
+      controlsDiv.appendChild(incrementBtn);
+      controlsDiv.appendChild(resetSingle);
+      
+      skillDiv.appendChild(nameSpan);
+      skillDiv.appendChild(controlsDiv);
+      skillsContainer.appendChild(skillDiv);
+    }
+  }
+  
+  // reset all skill counts to zero
+  function resetAllSkills() {
+    for (let skill of SKILLS_LIST) {
+      skillCounts[skill] = 0;
+    }
+    renderSkills();
+  }
+  
+  globalResetBtn.addEventListener("click", resetAllSkills);
+  
+  // ----- generate summary text (rich content) -----
+  function generateSummaryText() {
+    const totalSkillEvents = Object.values(skillCounts).reduce((sum, val) => sum + val, 0);
+    const timerValue = formatTime(elapsedSeconds);
+    const dateStr = new Date().toLocaleString();
+    
+    let lines = [];
+    lines.push(`📅 Report generated: ${dateStr}`);
+    lines.push(`⏱️ Session duration (stopwatch): ${timerValue}`);
+    lines.push(`📊 Total skill interventions recorded: ${totalSkillEvents}`);
+    lines.push(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+    lines.push(`🔹 SKILL TALLIES (each +1 per use):`);
+    
+    for (let skill of SKILLS_LIST) {
+      const count = skillCounts[skill];
+      if (count > 0) {
+        lines.push(`   • ${skill}: ${count} ${count === 1 ? 'time' : 'times'}`);
+      } else {
+        lines.push(`   • ${skill}: 0`);
+      }
+    }
+    lines.push(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+    lines.push(`💡 Notes: Exploratory skills (nonverbals, reflections, questions) support client processing; insight & directive skills (confrontation, interpretation, psychoeducation) deepen change.`);
+    lines.push(`✅ Session completed — Skill tracker reflects live therapeutic interactions.`);
+    return lines.join("\n");
+  }
+  
+  // show summary modal with content
+  function showSummary() {
+    const summaryText = generateSummaryText();
+    summaryTextBlock.innerText = summaryText;
+    summaryModal.classList.add("active");
+  }
+  
+  // close modal
+  function closeSummary() {
+    summaryModal.classList.remove("active");
+  }
+  
+  // copy summary to clipboard
+  async function copySummary() {
+    const text = summaryTextBlock.innerText;
+    if (!text) return;
+    try {
+      await navigator.clipboard.writeText(text);
+      // provide a tiny visual feedback (optional)
+      const originalText = copyBtn.innerText;
+      copyBtn.innerText = "✓ Copied!";
+      setTimeout(() => { copyBtn.innerText = originalText; }, 1200);
+    } catch (err) {
+      alert("Unable to copy. You can manually select text.");
+    }
+  }
+  
+  // print summary (print-friendly)
+  function printSummary() {
+    const content = summaryTextBlock.innerText;
+    const printWindow = window.open('', '_blank', 'width=700,height=500');
+    if (!printWindow) {
+      alert("Please allow popups to print summary.");
+      return;
+    }
+    printWindow.document.write(`
+      <html>
+        <head><title>Session Skills Summary</title>
+        <style>
+          body { font-family: monospace; padding: 2rem; white-space: pre-wrap; background: white; }
+          pre { font-size: 0.9rem; }
+        </style>
+        </head>
+        <body><pre>${content}</pre></body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.print();
+  }
+  
+  // event listeners for summary modal
+  getSummaryBtn.addEventListener("click", showSummary);
+  closeSummaryBtn.addEventListener("click", closeSummary);
+  copyBtn.addEventListener("click", copySummary);
+  printBtn.addEventListener("click", printSummary);
+  
+  // click outside modal to close? (optional, good UX)
+  summaryModal.addEventListener("click", (e) => {
+    if (e.target === summaryModal) {
+      closeSummary();
+    }
+  });
+  
+  // initial render
+  renderSkills();
+  
+  // bonus: when "end session" concept? The user can just stop timer + get summary.
+  // Provide additional: when reset timer, does not affect tallies, just timer. Perfect.
+  // Also add hotkey? no needed, it's static and simple.
+  
+  // ensure that stopwatch reset doesn't stop tallying, matches requirements: start/stop/restart stopwatch.
+  // all skills visible in one page (scroll is fine, but one page layout).
+  // many skills as possible: all 17 skills in grid, fits nicely.
+  // Also added closed/open questions separately because list includes open & closed questions; complete.
+  
+  // extra: if user wants to reset all skills but keep timer running, they can.
+  // To make summary even richer, we show also seconds in timer.
+</script>
+</body>
+</html>

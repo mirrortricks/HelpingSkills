@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Skill Review | Therapeutic Helping Skills Framework</title>
+  <!-- Google Fonts & smooth base -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 (free icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #faf8f5;
+      font-family: 'Inter', sans-serif;
+      color: #1e2a2e;
+      line-height: 1.5;
+      scroll-behavior: smooth;
+    }
+
+    /* custom accent & calm palette */
+    :root {
+      --sand: #f2ede4;
+      --stone: #e2dbcf;
+      --deep-teal: #2c4c4b;
+      --warm-accent: #c26e4a;
+      --soft-green: #cad2c5;
+      --charcoal: #2f3e3c;
+      --paper: #fffdf9;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem 2rem 4rem;
+    }
+
+    /* header / hero */
+    .hero {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding: 1.5rem 0 2rem;
+      border-bottom: 1px solid rgba(44, 76, 75, 0.15);
+    }
+    .hero h1 {
+      font-family: 'Instrument Serif', serif;
+      font-size: 4.2rem;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: var(--deep-teal);
+      background: linear-gradient(135deg, #2c4c4b 0%, #5c7e6e 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 0.5rem;
+    }
+    .hero .tagline {
+      font-size: 1.2rem;
+      color: #5b6e6b;
+      font-weight: 400;
+      max-width: 700px;
+      margin: 0.75rem auto 0;
+    }
+    .hero .sub {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--warm-accent);
+      font-weight: 600;
+      margin-top: 1rem;
+    }
+
+    /* 3 pillars cards (benefits) */
+    .pillars {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+      margin: 3rem 0 4rem;
+    }
+    .pillar-card {
+      background: var(--paper);
+      border-radius: 2rem;
+      padding: 1.8rem 1.5rem;
+      flex: 1;
+      min-width: 220px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.02), 0 2px 4px rgba(0, 0, 0, 0.02);
+      border: 1px solid var(--stone);
+      transition: transform 0.2s ease, box-shadow 0.2s;
+    }
+    .pillar-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 30px -12px rgba(44, 76, 75, 0.1);
+      border-color: #cdbfae;
+    }
+    .pillar-icon {
+      font-size: 2.5rem;
+      color: var(--warm-accent);
+      margin-bottom: 1rem;
+    }
+    .pillar-card h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: var(--deep-teal);
+    }
+    .pillar-card p {
+      color: #3d5552;
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+
+    /* section styling */
+    .section-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: 2.5rem;
+      font-weight: 400;
+      color: var(--deep-teal);
+      margin: 2.5rem 0 1rem;
+      border-left: 5px solid var(--warm-accent);
+      padding-left: 1rem;
+    }
+    .section-sub {
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--warm-accent);
+      margin-bottom: 0.5rem;
+    }
+    .intro-text {
+      background: #f3efe9;
+      padding: 1.8rem 2rem;
+      border-radius: 1.5rem;
+      margin: 1.5rem 0 2rem;
+      font-size: 1.05rem;
+      border-left: 6px solid var(--warm-accent);
+      color: #2b4543;
+    }
+
+    /* skill grid & cards */
+    .skill-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.8rem;
+      margin: 2rem 0 2rem;
+    }
+    .skill-card {
+      background: white;
+      border-radius: 1.25rem;
+      padding: 1.5rem;
+      box-shadow: 0 6px 12px -8px rgba(0, 0, 0, 0.05);
+      border: 1px solid #ece3da;
+      transition: all 0.2s;
+    }
+    .skill-card:hover {
+      border-color: #d6cbbc;
+      box-shadow: 0 12px 20px -12px rgba(44, 76, 75, 0.12);
+    }
+    .skill-name {
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.75rem;
+      color: #1f403e;
+    }
+    .skill-name i {
+      color: var(--warm-accent);
+      font-size: 1.3rem;
+      width: 1.8rem;
+    }
+    .skill-desc {
+      font-size: 0.9rem;
+      color: #435f5c;
+      margin-bottom: 1rem;
+      line-height: 1.45;
+    }
+    .skill-example {
+      background: #faf6f0;
+      padding: 0.8rem 1rem;
+      border-radius: 1rem;
+      font-size: 0.85rem;
+      border-left: 3px solid var(--warm-accent);
+      font-style: italic;
+      color: #2e5a55;
+    }
+    .skill-example i {
+      font-style: normal;
+      font-weight: 500;
+      color: #a95a38;
+      margin-right: 0.3rem;
+    }
+
+    .category-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      background: var(--soft-green);
+      color: #2c4c4b;
+      padding: 0.2rem 0.8rem;
+      border-radius: 20px;
+      margin-bottom: 1rem;
+      letter-spacing: 0.5px;
+    }
+
+    .quote-block {
+      background: #e9e3da;
+      padding: 1.8rem;
+      border-radius: 1.5rem;
+      margin: 2rem 0;
+      font-style: normal;
+      font-weight: 400;
+      color: #2d4a48;
+      border-right: 4px solid var(--warm-accent);
+    }
+
+    footer {
+      margin-top: 4rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #7f8e8b;
+      border-top: 1px solid #e2d9cf;
+      padding-top: 2rem;
+    }
+
+    @media (max-width: 760px) {
+      .container { padding: 1.5rem; }
+      .hero h1 { font-size: 2.8rem; }
+      .section-title { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  
+  <!-- Hero section: presentation focused -->
+  <div class="hero">
+    <div class="sub">✦ Helping Skills Framework ✦</div>
+    <h1>Skill Review</h1>
+    <div class="tagline">AARON RESLINK, LMHC-D <br></br> Based on Helping Skills by Clara Hill, (2024) and Learning the Art of Helping by Mark Young (2024) <br></br> Webpage design developed using Deepseek AI, content written by humans</div>
+  </div>
+
+  <!-- 3 Ways Counseling Skills Benefit Clients (core rationale visual) -->
+  <div class="pillars">
+    <div class="pillar-card">
+      <div class="pillar-icon"><i class="fas fa-head-side-heart"></i></div>
+      <h3>Feel understood & heard</h3>
+      <p>Foundational skills communicate nonjudgment, positive regard & empathy — the core conditions for therapeutic change (Rogers).</p>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-icon"><i class="fas fa-arrows-spin"></i></div>
+      <h3>Relate to self from new perspectives</h3>
+      <p>Through process and reflection, clients understand themselves deeply, unlocking insight and personal meaning.</p>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-icon"><i class="fas fa-hand-peace"></i></div>
+      <h3>Practice new behaviors</h3>
+      <p>A safe therapeutic environment becomes a rehearsal space for growth, change, and adaptive actions.</p>
+    </div>
+  </div>
+
+  <!-- Rationale & Transtheoretical overview -->
+  <div class="intro-text">
+    <i class="fas fa-gem" style="color: #c26e4a; margin-right: 8px;"></i> 
+    <strong>Transtheoretical & Essential</strong> — Helping skills are the observable interactions that build the helping relationship. Clara Hill's model organizes them into <strong>exploratory, insight, and directive</strong> categories. Mark Young's nonjudgmental listening cycle reminds us: <em>timing is as critical as content</em>. These skills are tools on a belt — reliable, accessible, and trackable (even for countertransference awareness).
+  </div>
+
+  <!-- ========= EXPLORATORY SKILLS SECTION ========= -->
+  <div>
+    <div class="section-sub"><i class="fas fa-compass"></i> Stage of therapy · 80% of responses</div>
+    <div class="section-title">Exploratory Skills</div>
+    <p style="margin-bottom: 1rem; max-width: 800px;">Most therapy occurs in exploration. These skills help clients continue talking, express curiosity, relieve conditions of worth, and experience emotional processing. Even without deeper interpretation, reflection alone often produces resolution.</p>
+    
+    <div class="skill-grid">
+      <!-- Nonverbals -->
+      <div class="skill-card"><div class="category-badge">Core Skill</div><div class="skill-name"><i class="fas fa-user-friends"></i> Nonverbals</div><div class="skill-desc">Eye contact, posture, open body language, and dyadic synchrony. Mirroring client movements builds alliance and safety.</div><div class="skill-example"><i class="fas fa-lightbulb"></i> Lean forward, uncross arms, nod — invite speech through presence.</div></div>
+      <!-- Minimal Encourager -->
+      <div class="skill-card"><div class="category-badge">Exploratory</div><div class="skill-name"><i class="fas fa-comment-dots"></i> Minimal Encourager</div><div class="skill-desc">Small vocalizations or gestures: “hmm”, “I’m with you”, “tell me more”, head nod — signals to continue.</div><div class="skill-example"><i class="fas fa-arrow-right"></i> “I’m listening…” “Yes.” “Right.”</div></div>
+      <!-- Door opener / Probe -->
+      <div class="skill-card"><div class="category-badge">Probe</div><div class="skill-name"><i class="fas fa-door-open"></i> Door opener & Probe</div><div class="skill-desc">An opening that invites client speech without pressure. Gentle directive to begin or deepen.</div><div class="skill-example"><i class="fas fa-arrow-right"></i> “I notice you look down today, tell me about your day so far.”</div></div>
+      <!-- Open & Closed questions -->
+      <div class="skill-card"><div class="category-badge">Questioning</div><div class="skill-name"><i class="fas fa-question-circle"></i> Open & Closed questions</div><div class="skill-desc">Open > closed: what, why, how invite exploration. Closed can limit but be used sparingly.</div><div class="skill-example"><i class="fas fa-exchange-alt"></i> “What’s it like to feel alone?” instead of “Do you feel alone?”</div></div>
+      <!-- Paraphrase -->
+      <div class="skill-card"><div class="category-badge">Reflection</div><div class="skill-name"><i class="fas fa-repeat"></i> Paraphrase</div><div class="skill-desc">Reflects story content concisely — focuses on key players, events, experiences.</div><div class="skill-example"><i class="fas fa-quote-left"></i> “Vacation didn’t turn out as planned.”</div></div>
+      <!-- Emotion Reflection -->
+      <div class="skill-card"><div class="category-badge">Affect</div><div class="skill-name"><i class="fas fa-heartbeat"></i> Emotion Reflection</div><div class="skill-desc">Track facial cues, tone, body language; guess emotional state with precision.</div><div class="skill-example"><i class="fas fa-smile-wink"></i> “When that happened, you felt devastated.” “Angry.”</div></div>
+      <!-- Meaning Reflection -->
+      <div class="skill-card"><div class="category-badge">Depth</div><div class="skill-name"><i class="fas fa-brain"></i> Meaning Reflection</div><div class="skill-desc">Reflects underlying values, beliefs, or the bigger worldview embedded in client’s story.</div><div class="skill-example"><i class="fas fa-globe"></i> “I’m hearing something about your need for loyalty.”</div></div>
+      <!-- Silence -->
+      <div class="skill-card"><div class="category-badge">Space</div><div class="skill-name"><i class="fas fa-volume-off"></i> Silence</div><div class="skill-desc">Allows processing, emotional presence, and internal reflection without interruption.</div><div class="skill-example"><i class="fas fa-peace"></i> Sitting together in silence after a vulnerable disclosure.</div></div>
+    </div>
+  </div>
+
+  <!-- ========= INSIGHT & ADVANCED SKILLS ========= -->
+  <div>
+    <div class="section-sub"><i class="fas fa-lightbulb"></i> Deepening · Insight & Action</div>
+    <div class="section-title">Insight & Directive Skills</div>
+    <p style="margin-bottom: 1rem;">When exploration is not enough, these skills help clients gain new self-understanding, challenge blind spots, and activate change. They require clinical timing and attunement.</p>
+    
+    <div class="skill-grid">
+      <!-- Confrontation -->
+      <div class="skill-card"><div class="category-badge">Insight</div><div class="skill-name"><i class="fas fa-balance-scale"></i> Confrontation</div><div class="skill-desc">Gentle pointing out discrepancies between words/actions or values/behaviors.</div><div class="skill-example"><i class="fas fa-hand-sparkles"></i> “You say you want closeness, yet you push people away — help me understand.”</div></div>
+      <!-- Interpretation -->
+      <div class="skill-card"><div class="category-badge">Insight</div><div class="skill-name"><i class="fas fa-draw-polygon"></i> Interpretation</div><div class="skill-desc">Offers a new frame, hypothesis, or deeper meaning beyond what client has stated.</div><div class="skill-example"><i class="fas fa-chalkboard"></i> “I’m going to take a leap — maybe your anger protects you from feeling powerless.”</div></div>
+      <!-- Self-Disclosure -->
+      <div class="skill-card"><div class="category-badge">Relational</div><div class="skill-name"><i class="fas fa-user-circle"></i> Self-Disclosure</div><div class="skill-desc">Appropriate sharing of personal experience to normalize or deepen alliance.</div><div class="skill-example"><i class="fas fa-comment"></i> “I’ve also felt that way when facing uncertainty…”</div></div>
+      <!-- Immediacy -->
+      <div class="skill-card"><div class="category-badge">Here & Now</div><div class="skill-name"><i class="fas fa-hourglass-half"></i> Immediacy</div><div class="skill-desc">Focus on the therapeutic relationship in the present moment; meta-communication.</div><div class="skill-example"><i class="fas fa-hand-peace"></i> “Right now you seem distant from me — is that happening elsewhere?”</div></div>
+      <!-- Challenge -->
+      <div class="skill-card"><div class="category-badge">Directive</div><div class="skill-name"><i class="fas fa-arrow-up"></i> Challenge</div><div class="skill-desc">Invite client to stretch beyond comfort, take risks, or test new behaviors.</div><div class="skill-example"><i class="fas fa-running"></i> “What would you risk doing differently this week?”</div></div>
+      <!-- Psychoeducation -->
+      <div class="skill-card"><div class="category-badge">Directive</div><div class="skill-name"><i class="fas fa-graduation-cap"></i> Psychoeducation</div><div class="skill-desc">Teaching about mental health, symptoms, coping mechanisms, or therapy process.</div><div class="skill-example"><i class="fas fa-book-open"></i> “Anxiety often creates this loop — let me explain the fight-or-flight response.”</div></div>
+      <!-- Goal Setting -->
+      <div class="skill-card"><div class="category-badge">Structure</div><div class="skill-name"><i class="fas fa-bullseye"></i> Goal Setting</div><div class="skill-desc">Collaboratively define concrete, meaningful therapeutic objectives.</div><div class="skill-example"><i class="fas fa-list-check"></i> “What would tell us we’re making progress by next month?”</div></div>
+      <!-- Orienting to therapy & Facilitating environment -->
+      <div class="skill-card"><div class="category-badge">Foundation</div><div class="skill-name"><i class="fas fa-couch"></i> Orienting to therapy &<br>Facilitating environment</div><div class="skill-desc">Setting expectations, boundaries, confidentiality, safety, and the emotional container.</div><div class="skill-example"><i class="fas fa-shield-alt"></i> “Here’s how we can work together; this space is for honesty and respect.”</div></div>
+    </div>
+  </div>
+
+  <!-- Additional critical note: Silence appears again but we already include in exploratory, also add note of cycle -->
+  <div class="quote-block">
+    <i class="fas fa-hand-sparkles" style="font-size: 1.8rem; float: left; margin-right: 1rem; color: #c26e4a;"></i>
+    <strong style="font-size: 1.1rem;">The Nonjudgmental Listening Cycle (Mark Young)</strong><br>
+    At any moment, counselors can enter the cycle: attend → listen → reflect → check → guide. Instead of forcing unique interventions, master the <strong>timing</strong> of basic skills. Inflexibility in skill use (e.g., overusing interpretation or self-disclosure) can signal countertransference — track your own pattern.
+  </div>
+
+  <!-- Rationale in depth: 3 conditions + transtheoretical -->
+  <div style="display: flex; flex-wrap: wrap; gap: 2rem; margin: 2rem 0 1rem;">
+    <div style="flex: 1; min-width: 220px;">
+      <h3 style="color: #2c4c4b; font-weight: 600;"><i class="fas fa-seedling"></i> Carl Rogers’ Core Conditions</h3>
+      <p>Nonjudgment, positive regard, and empathy — communicated through these observable helping skills — are the most critical factors facilitating therapeutic change across all orientations.</p>
+    </div>
+    <div style="flex: 1; min-width: 220px;">
+      <h3 style="color: #2c4c4b; font-weight: 600;"><i class="fas fa-chart-line"></i> Why Skills Tracking Matters</h3>
+      <p>By noticing your own frequency of interpretation, self-disclosure, or confrontation, you can assess countertransference. Ask: “Was I stuck? Did I need these skills for myself or the client?”</p>
+    </div>
+    <div style="flex: 1; min-width: 220px;">
+      <h3 style="color: #2c4c4b; font-weight: 600;"><i class="fas fa-tools"></i> Tool Belt Metaphor</h3>
+      <p>Helping skills are easily accessible and don’t require complex processing — they naturally guide important content. They build the basic elements of excellent therapy.</p>
+    </div>
+  </div>
+
+  <!-- Complete list badge summary (all skills listed) -->
+  <div style="background: #e7e1d8; border-radius: 2rem; padding: 1.5rem 2rem; margin: 2rem 0 1rem;">
+    <p style="font-weight: 600; letter-spacing: -0.2px; color: #2c4c4b;"><i class="fas fa-check-circle" style="color: #c26e4a;"></i> Complete Skill Set — Transtheoretical Mastery</p>
+    <div style="display: flex; flex-wrap: wrap; gap: 0.6rem 1rem; margin-top: 1rem;">
+      <span style="background: white; padding: 0.2rem 1rem; border-radius: 40px; font-size: 0.85rem;">Nonverbals</span>
+      <span style="background: white; padding: 0.2rem 1rem; border-radius: 40px; font-size: 0.85rem;">Door opener & Probe</span>
+      <span style="background: white; padding: 0.2rem 1rem; border-radius: 40px; font-size: 0.85rem;">Open & Closed questions</span>
+      <span style="background: white; padding: 0.2rem 1rem; border-radius: 40px; font-size: 0.85rem;">Paraphrase</span>
+      <span style="background: white; padding: 0.2rem 1rem; border-radius: 40px; font-size: 0.85rem;">Emotion Reflection</span>
+      <span style="background: white; padding: 0.2rem 1rem; border-radius: 40px; font-size: 0.85rem;">Meaning Reflection</span>
+      <span style="background: white; padding: 0.2rem 1rem; border-radius: 40px; font-size: 0.85rem;">Silence</span>
+      <span style="background: white; padding: 0.2rem 1rem; border-radius: 40px; font-size: 0.85rem;">Confrontation</span>
+      <span style="background: white; padding: 0.2rem 1rem; border-radius: 40px; font-size: 0.85rem;">Interpretation</span>
+      <span style="background: white; padding: 0.2rem 1rem; border-radius: 40px; font-size: 0.85rem;">Self-Disclosure</span>
+      <span style="background: white; padding: 0.2rem 1rem; border-radius: 40px; font-size: 0.85rem;">Immediacy</span>
+      <span style="background: white; padding: 0.2rem 1rem; border-radius: 40px; font-size: 0.85rem;">Challenge</span>
+      <span style="background: white; padding: 0.2rem 1rem; border-radius: 40px; font-size: 0.85rem;">Psychoeducation</span>
+      <span style="background: white; padding: 0.2rem 1rem; border-radius: 40px; font-size: 0.85rem;">Goal Setting</span>
+      <span style="background: white; padding: 0.2rem 1rem; border-radius: 40px; font-size: 0.85rem;">Orienting to therapy</span>
+      <span style="background: white; padding: 0.2rem 1rem; border-radius: 40px; font-size: 0.85rem;">Facilitating environment</span>
+    </div>
+  </div>
+
+  <!-- Closing insight about exploration & insight thin boundary -->
+  <div style="border-top: 1px solid #e2d9cf; margin-top: 2rem; padding-top: 1.5rem; text-align: center; max-width: 800px; margin-left: auto; margin-right: auto;">
+    <p style="color: #476b67; font-size: 0.95rem;"><i class="fas fa-feather-alt"></i> “The distinction between exploration and insight is thin — many clients experience resolution simply through reflection. Yet when blocked processes appear, insight & directive skills invite transformation.”</p>
+    <p style="margin-top: 0.75rem; font-size: 0.9rem;">— Based on Hill’s three-stage model & person-centered principles —</p>
+  </div>
+
+  <footer>
+    <i class="fas fa-heart" style="color: #c26e4a; opacity: 0.7;"></i> Skill Review — Clinical Presentation Tool · Transtherapeutic helping skills cultivate empathy, nonjudgment, and positive regard. <br>© helping skills framework | designed for counselors, educators & trainees
+  </footer>
+</div>
+</body>
+</html>
