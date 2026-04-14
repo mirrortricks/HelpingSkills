@@ -3,23 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Skills Tracker | Counseling Session Tool</title>
+  <title>Skills Tracker + Timeline | Counseling Session Tool</title>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      user-select: none; /* slightly better for rapid tapping, but text can still be selected in summary */
     }
 
     body {
       background: #f0f2f1;
       font-family: system-ui, 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
-      padding: 1.5rem 1.2rem 3rem;
+      padding: 1.5rem 1.2rem 2rem;
       color: #1a2e2b;
     }
 
-    /* main layout: two columns on desktop, one on mobile */
+    /* main two-column layout */
     .tracker-grid {
       max-width: 1600px;
       margin: 0 auto;
@@ -28,23 +27,21 @@
       gap: 2rem;
     }
 
-    /* SKILLS PANEL (left / main) */
     .skills-panel {
       flex: 2.5;
       min-width: 280px;
     }
 
-    /* stopwatch + summary panel */
     .tools-panel {
-      flex: 1.2;
-      min-width: 260px;
+      flex: 1.4;
+      min-width: 280px;
     }
 
-    /* header */
     .top-header {
       margin-bottom: 1.8rem;
       text-align: center;
     }
+
     .top-header h1 {
       font-size: 1.9rem;
       font-weight: 600;
@@ -54,13 +51,8 @@
       color: transparent;
       letter-spacing: -0.3px;
     }
-    .top-header p {
-      color: #4c6a66;
-      font-size: 0.9rem;
-      margin-top: 0.3rem;
-    }
 
-    /* skill card container (grid) */
+    /* skill cards grid */
     .skill-cards {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
@@ -71,67 +63,63 @@
     .skill-item {
       background: white;
       border-radius: 1.2rem;
-      padding: 0.8rem 0.7rem 0.7rem 1rem;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.05);
+      padding: 0.7rem 0.7rem 0.7rem 1rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
       border: 1px solid #dfe6e3;
-      transition: all 0.1s ease;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 0.5rem;
+      transition: 0.05s linear;
     }
-    .skill-item:hover {
-      border-color: #bdd0ca;
-      background: #fefefc;
-    }
+
     .skill-name {
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: #1c4e4b;
-      letter-spacing: -0.2px;
       background: #eef3f0;
       padding: 0.2rem 0.6rem;
       border-radius: 40px;
-      display: inline-block;
     }
+
     .tally-controls {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.4rem;
       background: #f9fbf9;
       padding: 0.2rem 0.2rem 0.2rem 0.5rem;
       border-radius: 60px;
     }
+
     .tally-count {
       font-weight: 700;
       font-size: 1.2rem;
       min-width: 2rem;
       text-align: center;
       color: #145c56;
-      background: white;
-      padding: 0 0.2rem;
     }
+
     button.tally-btn {
       background: #e9f0ed;
       border: none;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: bold;
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
       border-radius: 40px;
       cursor: pointer;
       color: #2c6e68;
-      transition: 0.08s linear;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 1px 1px rgba(0,0,0,0.05);
     }
+
     button.tally-btn:active {
       background: #cbdcd6;
       transform: scale(0.94);
     }
+
     .reset-skill {
       background: none;
       border: none;
@@ -141,16 +129,13 @@
       width: 24px;
       height: 24px;
       border-radius: 30px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
     }
+
     .reset-skill:hover {
-      background: #f0e9e2;
       color: #bf6f4a;
     }
 
-    /* stopwatch card */
+    /* cards */
     .card {
       background: white;
       border-radius: 1.8rem;
@@ -159,11 +144,11 @@
       box-shadow: 0 8px 18px rgba(0, 0, 0, 0.05);
       border: 1px solid #e2eae6;
     }
+
     .stopwatch-time {
-      font-size: 2.8rem;
+      font-size: 2.5rem;
       font-weight: 700;
       font-family: monospace;
-      letter-spacing: 2px;
       background: #1f3d3a;
       color: #f2f9f0;
       text-align: center;
@@ -171,13 +156,15 @@
       border-radius: 2rem;
       margin-bottom: 1rem;
     }
+
     .btn-group {
       display: flex;
       flex-wrap: wrap;
       gap: 0.6rem;
       justify-content: center;
-      margin: 1rem 0 0.6rem;
+      margin: 1rem 0 0.4rem;
     }
+
     button.action {
       background: #ecf3f0;
       border: none;
@@ -186,37 +173,71 @@
       font-weight: 600;
       font-size: 0.85rem;
       cursor: pointer;
-      transition: 0.1s;
       color: #2a5f59;
-      font-family: inherit;
     }
+
     button.action-primary {
       background: #2f6b62;
       color: white;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
     }
+
     button.action-primary:active {
       background: #1e4e48;
     }
-    button.action-danger {
-      background: #fff0ea;
-      color: #c26e4a;
-    }
-    button.summary-btn {
+
+    .summary-btn {
       background: #dce8e4;
       width: 100%;
-      margin-top: 0.4rem;
       font-weight: 700;
+      margin-top: 0.3rem;
     }
 
-    /* summary modal overlay (lightbox) */
+    .timeline-log {
+      background: #fefaf5;
+      border-radius: 1.2rem;
+      padding: 0.8rem;
+      margin-top: 0.8rem;
+      max-height: 280px;
+      overflow-y: auto;
+      font-size: 0.75rem;
+      border: 1px solid #e6ddd2;
+    }
+
+    .timeline-log h4 {
+      font-size: 0.8rem;
+      margin-bottom: 0.5rem;
+      color: #a07154;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .timeline-entry {
+      font-family: monospace;
+      padding: 0.2rem 0;
+      border-bottom: 1px solid #efe4d8;
+      font-size: 0.7rem;
+      color: #3b5c56;
+    }
+
+    .badge-clear {
+      background: none;
+      border: none;
+      color: #b49273;
+      cursor: pointer;
+      font-size: 0.7rem;
+      margin-left: 8px;
+      text-decoration: underline;
+    }
+
+    /* modal summary */
     .summary-overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(30, 40, 38, 0.8);
+      background-color: rgba(30, 40, 38, 0.85);
       backdrop-filter: blur(4px);
       display: flex;
       align-items: center;
@@ -226,121 +247,115 @@
       opacity: 0;
       transition: 0.2s ease;
     }
+
     .summary-overlay.active {
       visibility: visible;
       opacity: 1;
     }
+
     .summary-card {
       background: #fffdf9;
-      max-width: 600px;
+      max-width: 680px;
       width: 90%;
-      max-height: 80vh;
+      max-height: 85vh;
       border-radius: 2rem;
       padding: 1.5rem 1.8rem;
-      box-shadow: 0 25px 40px rgba(0, 0, 0, 0.25);
       display: flex;
       flex-direction: column;
       gap: 1rem;
-      border: 1px solid #cddad4;
+      box-shadow: 0 25px 40px rgba(0, 0, 0, 0.3);
     }
+
     .summary-card h3 {
-      font-size: 1.6rem;
-      font-weight: 600;
+      font-size: 1.5rem;
       color: #1c4e4b;
       border-left: 5px solid #c26e4a;
       padding-left: 1rem;
     }
+
     .summary-content {
       overflow-y: auto;
       background: #f6faf8;
       padding: 1rem;
       border-radius: 1.2rem;
-      font-size: 0.9rem;
       font-family: monospace;
       white-space: pre-wrap;
-      word-break: break-word;
-      max-height: 50vh;
+      font-size: 0.8rem;
+      max-height: 55vh;
       line-height: 1.5;
     }
+
     .summary-actions {
       display: flex;
       gap: 0.8rem;
       flex-wrap: wrap;
       justify-content: flex-end;
     }
+
     .summary-actions button {
       padding: 0.5rem 1.2rem;
       border-radius: 3rem;
       border: none;
       font-weight: 500;
       cursor: pointer;
-      background: #e5edea;
     }
+
     .btn-copy {
       background: #2f6b62;
       color: white;
     }
+
     .btn-print {
       background: #f0e5da;
     }
-    .close-summary {
-      background: #e2cfc0;
-    }
-    hr {
-      margin: 0.3rem 0;
-      border-color: #e0e9e5;
-    }
-    .reset-all-skills {
+
+    .reset-all {
       margin-top: 0.5rem;
       text-align: right;
     }
+
     .small-note {
       font-size: 0.7rem;
       color: #8aa69f;
       text-align: center;
       margin-top: 1rem;
     }
-    @media (max-width: 720px) {
-      .skill-cards {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      }
-      .stopwatch-time {
-        font-size: 2rem;
-      }
-      body {
-        padding: 1rem;
-      }
-    }
+
     footer {
       text-align: center;
       font-size: 0.7rem;
       margin-top: 2rem;
       color: #92aba4;
     }
+
+    @media (max-width: 720px) {
+      .skill-cards {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      }
+    }
   </style>
 </head>
 <body>
 
 <div class="top-header">
-  <h1>📋 Helping Skills Tracker</h1>
-  <p>AARON RESLINK, LMHC-D</p>
-<p> Webpage design developed using Deepseek AI, content written by humans </p>
+  <h1>⏱️ Skills Tracker + Timeline</h1>
+  <p>tally each skill · live timestamp · session timeline & summary</p>
 </div>
 
 <div class="tracker-grid">
-  <!-- SKILLS SECTION: all skills listed previously -->
+  <!-- SKILLS PANEL -->
   <div class="skills-panel">
     <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.8rem;">
-      <h3 style="font-weight: 500; color:#2c5e58;">🔘 Session skill tallies</h3>
-      <button id="globalResetSkills" class="action" style="background:#f2eae3; padding:0.3rem 1rem;">⟳ Reset all counts</button>
+      <h3 style="font-weight: 500;">📌 Skill tallies (click + to log with time)</h3>
+      <button id="globalResetSkills" class="action" style="background:#f2eae3;">⟳ Reset all counts & timeline</button>
     </div>
     <div class="skill-cards" id="skillsContainer"></div>
     <div class="small-note">
-      <i class="note-icon">⚡</i> Tap + to count each use | reset individual with <span style="background:#eef; padding:0 6px; border-radius:12px;">↺</span>
+      ⚡ Each <strong>+</strong> adds 1 use, records current session time → builds ordered timeline. <strong>↺</strong> resets single skill count (does not remove timeline entries for that skill — full reset clears timeline).
     </div>
   </div>
 
-  <!-- RIGHT PANEL: stopwatch + summary -->
+  <!-- RIGHT PANEL: Timer + Live Timeline -->
   <div class="tools-panel">
     <div class="card">
       <div style="font-weight: 600; margin-bottom: 0.5rem;">⏱️ Session Timer</div>
@@ -348,29 +363,29 @@
       <div class="btn-group">
         <button id="startBtn" class="action action-primary">▶ Start</button>
         <button id="stopBtn" class="action">⏸ Stop</button>
-        <button id="resetTimerBtn" class="action action-danger">⟲ Reset</button>
+        <button id="resetTimerBtn" class="action">⟲ Reset Timer</button>
       </div>
     </div>
 
     <div class="card">
-      <div style="font-weight: 600; margin-bottom: 0.8rem;">📄 Session Summary</div>
-      <button id="getSummaryBtn" class="action summary-btn" style="background:#e0d9cf;">📋 Get Summary & Report</button>
-      <p style="font-size: 0.7rem; margin-top: 0.8rem; color:#7c978f;">Summary includes all skill tallies + total session time. You can copy or print.</p>
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h4 style="font-weight: 600;">📋 Skill Timeline (in order)</h4>
+        <button id="clearTimelineBtn" class="badge-clear" style="font-size:0.7rem;">🗑 Clear timeline only</button>
+      </div>
+      <div class="timeline-log" id="timelineContainer">
+        <div style="color:#b2aa9b; text-align:center; padding:1rem;">— no skills tallied yet —<br>press + on any skill to log</div>
+      </div>
+      <button id="getSummaryBtn" class="action summary-btn" style="margin-top: 1rem;">📄 Get Full Summary (counts + timeline)</button>
     </div>
   </div>
 </div>
+<footer>🧠 Every tally records a timestamp (session time). Summary includes ordered event log.</footer>
 
-<footer>
-  🧰 transtheoretical helping skills tracker · based on exploratory, insight & directive framework
-</footer>
-
-<!-- SUMMARY MODAL (lightbox) -->
+<!-- MODAL SUMMARY -->
 <div id="summaryModal" class="summary-overlay">
   <div class="summary-card">
     <h3>📋 Session Summary Report</h3>
-    <div class="summary-content" id="summaryTextBlock">
-      <!-- dynamic summary will appear here -->
-    </div>
+    <div class="summary-content" id="summaryTextBlock"></div>
     <div class="summary-actions">
       <button id="copySummaryBtn" class="btn-copy">📎 Copy text</button>
       <button id="printSummaryBtn" class="btn-print">🖨️ Print</button>
@@ -380,9 +395,7 @@
 </div>
 
 <script>
-  // --------------------------------------------------------------
-  // 1. DEFINE THE FULL LIST OF SKILLS (based on your original prompt)
-  // --------------------------------------------------------------
+  // ---------- SKILLS LIST (full set) ----------
   const SKILLS_LIST = [
     "Nonverbals", "Door opener & Probe", "Open questions", "Closed questions",
     "Paraphrase", "Emotion Reflection", "Meaning Reflection", "Silence",
@@ -390,53 +403,60 @@
     "Challenge", "Psychoeducation", "Goal Setting", 
     "Orienting to therapy", "Facilitating environment"
   ];
-  // note: "Open & Closed questions" split into two for tally clarity, but you can tally individually.
-  // Combined original spirit, but it's more granular: open questions and closed questions separate.
-  // also we include both as two items for complete tracking. consistent with your list.
-  // (All original skills appear: Nonverbals, Door opener & Probe, Open & Closed, Paraphrase, Emotion, Meaning, Silence, Confrontation, Interpretation, Self-Disclosure, Immediacy, Challenge, Psychoeducation, Goal Setting, Orienting, Facilitating.)
-  // We also keep "Closed questions" and "Open questions" as two separate tally-able skills to match classic tracking.
 
-  // state: object mapping skill name -> count
+  // Data state
   let skillCounts = {};
-  
-  // initialize counts to zero
-  function initCounts() {
-    SKILLS_LIST.forEach(skill => {
-      skillCounts[skill] = 0;
-    });
-  }
-  initCounts();
+  // Timeline array: each entry = { skillName, timestampFormatted, elapsedSecondsAtMoment }
+  let timelineEvents = [];  
+
+  // Stopwatch state
+  let timerInterval = null;
+  let elapsedSeconds = 0;
+  let isRunning = false;
 
   // DOM elements
   const skillsContainer = document.getElementById("skillsContainer");
   const globalResetBtn = document.getElementById("globalResetSkills");
+  const timelineDiv = document.getElementById("timelineContainer");
+  const clearTimelineBtn = document.getElementById("clearTimelineBtn");
   const getSummaryBtn = document.getElementById("getSummaryBtn");
   const summaryModal = document.getElementById("summaryModal");
   const summaryTextBlock = document.getElementById("summaryTextBlock");
   const copyBtn = document.getElementById("copySummaryBtn");
   const printBtn = document.getElementById("printSummaryBtn");
   const closeSummaryBtn = document.getElementById("closeSummaryBtn");
-
-  // ----- stopwatch logic -----
-  let timerInterval = null;
-  let elapsedSeconds = 0;      // total seconds
-  let isRunning = false;
   const timerDisplay = document.getElementById("timerDisplay");
   const startBtn = document.getElementById("startBtn");
   const stopBtn = document.getElementById("stopBtn");
   const resetTimerBtn = document.getElementById("resetTimerBtn");
 
-  function formatTime(sec) {
+  // Initialize counts
+  function initCounts() {
+    SKILLS_LIST.forEach(skill => { skillCounts[skill] = 0; });
+  }
+  initCounts();
+
+  // Format mm:ss or hh:mm:ss based on elapsedSeconds for display inside timeline?
+  function formatClock(sec) {
     const hours = Math.floor(sec / 3600);
     const minutes = Math.floor((sec % 3600) / 60);
     const seconds = sec % 60;
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    if (hours > 0) return `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+    return `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+  }
+
+  function formatFullTimer(sec) {
+    const hours = Math.floor(sec / 3600);
+    const minutes = Math.floor((sec % 3600) / 60);
+    const seconds = sec % 60;
+    return `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
   }
 
   function updateTimerDisplay() {
-    timerDisplay.innerText = formatTime(elapsedSeconds);
+    timerDisplay.innerText = formatFullTimer(elapsedSeconds);
   }
 
+  // Stopwatch controls
   function startTimer() {
     if (isRunning) return;
     isRunning = true;
@@ -447,15 +467,10 @@
       }
     }, 1000);
   }
-
   function stopTimer() {
-    if (timerInterval) {
-      clearInterval(timerInterval);
-      timerInterval = null;
-    }
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
     isRunning = false;
   }
-
   function resetTimer() {
     stopTimer();
     elapsedSeconds = 0;
@@ -466,11 +481,53 @@
   stopBtn.addEventListener("click", stopTimer);
   resetTimerBtn.addEventListener("click", resetTimer);
 
-  // ----- RENDER SKILLS WITH TALLY UI -----
-  function renderSkills() {
+  // ---------- CORE: record skill use with current session time ----------
+  function recordSkillUse(skillName) {
+    // increment count
+    skillCounts[skillName] = (skillCounts[skillName] || 0) + 1;
+    
+    // record event with current session timer value (elapsedSeconds)
+    const currentTimeSec = elapsedSeconds;
+    const formattedTime = formatClock(currentTimeSec);
+    timelineEvents.push({
+      skill: skillName,
+      timeSec: currentTimeSec,
+      timeLabel: formattedTime,
+      order: timelineEvents.length + 1
+    });
+    
+    // re-render skills UI (counts update) and timeline UI
+    renderSkillsUI();
+    renderTimelineUI();
+  }
+
+  // remove timeline entries but keep skill counts? "Clear timeline only" button: removes all events but keeps tallies.
+  function clearTimelineOnly() {
+    timelineEvents = [];
+    renderTimelineUI();
+  }
+  
+  // full reset (counts + timeline)
+  function fullReset() {
+    initCounts();
+    timelineEvents = [];
+    renderSkillsUI();
+    renderTimelineUI();
+  }
+
+  // reset individual skill count to zero BUT does NOT remove its timeline entries? 
+  // To keep consistency: reset skill count to 0, but timeline entries remain (historical log). However, summary will show count = 0 but entries exist? 
+  // Better: when resetting a single skill, we keep timeline entries untouched but count goes to 0 — user can also clear timeline separately. This matches flexible workflow.
+  function resetSingleSkillCount(skillName) {
+    skillCounts[skillName] = 0;
+    renderSkillsUI();
+  }
+
+  // Render skill cards with updated counts
+  function renderSkillsUI() {
     skillsContainer.innerHTML = "";
     for (let skill of SKILLS_LIST) {
-      const count = skillCounts[skill];
+      const count = skillCounts[skill] || 0;
       const skillDiv = document.createElement("div");
       skillDiv.className = "skill-item";
       
@@ -488,7 +545,7 @@
         e.stopPropagation();
         if (skillCounts[skill] > 0) {
           skillCounts[skill]--;
-          renderSkills();  // re-render to update counts
+          renderSkillsUI();
         }
       });
       
@@ -499,20 +556,19 @@
       const incrementBtn = document.createElement("button");
       incrementBtn.innerText = "+";
       incrementBtn.className = "tally-btn";
+      // IMPORTANT: increment records skill use with timestamp!
       incrementBtn.addEventListener("click", (e) => {
         e.stopPropagation();
-        skillCounts[skill]++;
-        renderSkills();
+        recordSkillUse(skill);
       });
       
       const resetSingle = document.createElement("button");
       resetSingle.innerHTML = "↺";
       resetSingle.className = "reset-skill";
-      resetSingle.title = "reset this skill to 0";
+      resetSingle.title = "reset count of this skill to 0 (timeline entries stay)";
       resetSingle.addEventListener("click", (e) => {
         e.stopPropagation();
-        skillCounts[skill] = 0;
-        renderSkills();
+        resetSingleSkillCount(skill);
       });
       
       controlsDiv.appendChild(decrementBtn);
@@ -525,121 +581,114 @@
       skillsContainer.appendChild(skillDiv);
     }
   }
-  
-  // reset all skill counts to zero
-  function resetAllSkills() {
-    for (let skill of SKILLS_LIST) {
-      skillCounts[skill] = 0;
+
+  // Render timeline panel (ordered list of events)
+  function renderTimelineUI() {
+    timelineDiv.innerHTML = "";
+    if (timelineEvents.length === 0) {
+      timelineDiv.innerHTML = '<div style="color:#b2aa9b; text-align:center; padding:1rem;">⏳ No skills tallied yet.<br>Press "+" on any skill to record timestamp.</div>';
+      return;
     }
-    renderSkills();
+    
+    const headerDiv = document.createElement("div");
+    headerDiv.style.fontSize = "0.7rem";
+    headerDiv.style.marginBottom = "6px";
+    headerDiv.style.fontWeight = "500";
+    headerDiv.style.color = "#9b7e64";
+    headerDiv.innerText = `📌 ${timelineEvents.length} events in order`;
+    timelineDiv.appendChild(headerDiv);
+    
+    for (let i = 0; i < timelineEvents.length; i++) {
+      const ev = timelineEvents[i];
+      const entry = document.createElement("div");
+      entry.className = "timeline-entry";
+      entry.innerHTML = `<span style="display:inline-block; width:38px;">${(i+1)}.</span> 
+                         <strong>[${ev.timeLabel}]</strong>  ${ev.skill}`;
+      timelineDiv.appendChild(entry);
+    }
+    
+    // optional tiny scroll to bottom
+    timelineDiv.scrollTop = timelineDiv.scrollHeight;
   }
-  
-  globalResetBtn.addEventListener("click", resetAllSkills);
-  
-  // ----- generate summary text (rich content) -----
-  function generateSummaryText() {
-    const totalSkillEvents = Object.values(skillCounts).reduce((sum, val) => sum + val, 0);
-    const timerValue = formatTime(elapsedSeconds);
+
+  // ----- generate FULL summary with counts + timeline in order -----
+  function generateFullSummary() {
+    const totalEvents = timelineEvents.length;
+    const totalSkillCounts = Object.values(skillCounts).reduce((a,b) => a+b, 0);
+    const sessionDuration = formatFullTimer(elapsedSeconds);
     const dateStr = new Date().toLocaleString();
     
     let lines = [];
-    lines.push(`📅 Report generated: ${dateStr}`);
-    lines.push(`⏱️ Session duration (stopwatch): ${timerValue}`);
-    lines.push(`📊 Total skill interventions recorded: ${totalSkillEvents}`);
-    lines.push(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
-    lines.push(`🔹 SKILL TALLIES (each +1 per use):`);
-    
+    lines.push(`📅 Session Report: ${dateStr}`);
+    lines.push(`⏱️ Final stopwatch time: ${sessionDuration}`);
+    lines.push(`📊 Total skill uses (tally sum): ${totalSkillCounts}  |  Timeline events: ${totalEvents}`);
+    lines.push(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+    lines.push(`🔹 SKILL TALLY SUMMARY (final counts):`);
     for (let skill of SKILLS_LIST) {
-      const count = skillCounts[skill];
-      if (count > 0) {
-        lines.push(`   • ${skill}: ${count} ${count === 1 ? 'time' : 'times'}`);
-      } else {
-        lines.push(`   • ${skill}: 0`);
+      const cnt = skillCounts[skill] || 0;
+      lines.push(`   • ${skill}: ${cnt}`);
+    }
+    lines.push(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+    lines.push(`⏲️  CHRONOLOGICAL TIMELINE (skills in order used):`);
+    if (timelineEvents.length === 0) {
+      lines.push(`   (no skills recorded yet)`);
+    } else {
+      for (let idx = 0; idx < timelineEvents.length; idx++) {
+        const ev = timelineEvents[idx];
+        lines.push(`   ${(idx+1).toString().padStart(2,' ')}.  [${ev.timeLabel}]  ${ev.skill}`);
       }
     }
-    lines.push(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
-    lines.push(`💡 Notes: Exploratory skills (nonverbals, reflections, questions) support client processing; insight & directive skills (confrontation, interpretation, psychoeducation) deepen change.`);
-    lines.push(`✅ Session completed — Skill tracker reflects live therapeutic interactions.`);
+    lines.push(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+    lines.push(`💡 Notes: Each "+" logs exact session time. Use timeline to review intervention flow.`);
     return lines.join("\n");
   }
   
-  // show summary modal with content
+  // show summary modal
   function showSummary() {
-    const summaryText = generateSummaryText();
+    const summaryText = generateFullSummary();
     summaryTextBlock.innerText = summaryText;
     summaryModal.classList.add("active");
   }
   
-  // close modal
-  function closeSummary() {
-    summaryModal.classList.remove("active");
-  }
+  function closeSummary() { summaryModal.classList.remove("active"); }
   
-  // copy summary to clipboard
   async function copySummary() {
     const text = summaryTextBlock.innerText;
     if (!text) return;
     try {
       await navigator.clipboard.writeText(text);
-      // provide a tiny visual feedback (optional)
-      const originalText = copyBtn.innerText;
+      const original = copyBtn.innerText;
       copyBtn.innerText = "✓ Copied!";
-      setTimeout(() => { copyBtn.innerText = originalText; }, 1200);
-    } catch (err) {
-      alert("Unable to copy. You can manually select text.");
-    }
+      setTimeout(() => { copyBtn.innerText = original; }, 1200);
+    } catch(e) { alert("Manual copy possible"); }
   }
   
-  // print summary (print-friendly)
   function printSummary() {
     const content = summaryTextBlock.innerText;
-    const printWindow = window.open('', '_blank', 'width=700,height=500');
-    if (!printWindow) {
-      alert("Please allow popups to print summary.");
-      return;
-    }
-    printWindow.document.write(`
-      <html>
-        <head><title>Session Skills Summary</title>
-        <style>
-          body { font-family: monospace; padding: 2rem; white-space: pre-wrap; background: white; }
-          pre { font-size: 0.9rem; }
-        </style>
-        </head>
-        <body><pre>${content}</pre></body>
-      </html>
+    const win = window.open('', '_blank');
+    if (!win) { alert("Allow popup to print."); return; }
+    win.document.write(`
+      <html><head><title>Session Skills & Timeline</title>
+      <style>body { font-family: monospace; padding: 2rem; white-space: pre-wrap; } pre { font-size: 0.9rem; }</style>
+      </head><body><pre>${content}</pre></body></html>
     `);
-    printWindow.document.close();
-    printWindow.print();
+    win.document.close();
+    win.print();
   }
   
-  // event listeners for summary modal
+  // Event listeners
+  globalResetBtn.addEventListener("click", fullReset);
+  clearTimelineBtn.addEventListener("click", clearTimelineOnly);
   getSummaryBtn.addEventListener("click", showSummary);
   closeSummaryBtn.addEventListener("click", closeSummary);
   copyBtn.addEventListener("click", copySummary);
   printBtn.addEventListener("click", printSummary);
-  
-  // click outside modal to close? (optional, good UX)
-  summaryModal.addEventListener("click", (e) => {
-    if (e.target === summaryModal) {
-      closeSummary();
-    }
-  });
+  summaryModal.addEventListener("click", (e) => { if (e.target === summaryModal) closeSummary(); });
   
   // initial render
-  renderSkills();
-  
-  // bonus: when "end session" concept? The user can just stop timer + get summary.
-  // Provide additional: when reset timer, does not affect tallies, just timer. Perfect.
-  // Also add hotkey? no needed, it's static and simple.
-  
-  // ensure that stopwatch reset doesn't stop tallying, matches requirements: start/stop/restart stopwatch.
-  // all skills visible in one page (scroll is fine, but one page layout).
-  // many skills as possible: all 17 skills in grid, fits nicely.
-  // Also added closed/open questions separately because list includes open & closed questions; complete.
-  
-  // extra: if user wants to reset all skills but keep timer running, they can.
-  // To make summary even richer, we show also seconds in timer.
+  renderSkillsUI();
+  renderTimelineUI();
+  updateTimerDisplay();
 </script>
 </body>
 </html>
